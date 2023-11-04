@@ -11,6 +11,8 @@ session = HTTP(
     api_secret=BYBIT_API_SECRET,
 )
 # SENDING ALL AVAILABLE FUNDS ON SUBBACOUNTS TO MAIN ACCOUNT
+from_member_ids = [INTRA_ID, CLASSIC_ID, SWING_ID, INTRA2_ID, CLASSIC2_ID, SWING2_ID, INTRA3_ID, CLASSIC3_ID, SWING3_ID]
+amounts = [INTRA_TRANSFERABLE['result']['balance']['transferBalance'], CLASSIC_TRANSFERABLE['result']['balance']['transferBalance'], SWING_TRANSFERABLE['result']['balance']['transferBalance'], INTRA2_TRANSFERABLE['result']['balance']['transferBalance'], CLASSIC2_TRANSFERABLE['result']['balance']['transferBalance'], SWING2_TRANSFERABLE['result']['balance']['transferBalance'], INTRA3_TRANSFERABLE['result']['balance']['transferBalance'], CLASSIC3_TRANSFERABLE['result']['balance']['transferBalance'], SWING3_TRANSFERABLE['result']['balance']['transferBalance']]
 
 def fund_spot_account(session, from_member_ids, amounts):
     if len(from_member_ids) != len(amounts):
@@ -24,23 +26,24 @@ def fund_spot_account(session, from_member_ids, amounts):
 
     for from_member_id, amount in zip(from_member_ids, amounts):
         transfer_id = str(uuid.uuid4())
-        if int(float(amount)) > 1:
+        print(amount)
+        ajusted_amount = (int(amount)-1)
+        if ajusted_amount > 1 :
             result = session.create_universal_transfer(
                 transferId=transfer_id,
                 coin=coin,
-                amount=str(amount),
+                amount=str(ajusted_amount),
                 fromMemberId=from_member_id,
                 toMemberId=MAIN_ID, 
                 fromAccountType=from_account_type,
                 toAccountType=to_account_type
             )
             results.append(result)
-        else :
-            print("Less than 1$")
+        else : 
+            print("Already empty")
     return results
 
-from_member_ids = [INTRA_ID, CLASSIC_ID, SWING_ID, INTRA2_ID, CLASSIC2_ID, SWING2_ID, INTRA3_ID, CLASSIC3_ID, SWING3_ID]
-amounts = [INTRA_TRANSFERABLE['result']['balance']['transferBalance'], CLASSIC_TRANSFERABLE['result']['balance']['transferBalance'], SWING_TRANSFERABLE['result']['balance']['transferBalance'], INTRA2_TRANSFERABLE['result']['balance']['transferBalance'], CLASSIC2_TRANSFERABLE['result']['balance']['transferBalance'], SWING2_TRANSFERABLE['result']['balance']['transferBalance'], INTRA3_TRANSFERABLE['result']['balance']['transferBalance'], CLASSIC3_TRANSFERABLE['result']['balance']['transferBalance'], SWING3_TRANSFERABLE['result']['balance']['transferBalance']]
+
 print(amounts)
 results = fund_spot_account(session, from_member_ids, amounts)
 
