@@ -2,6 +2,7 @@ from config import BYBIT_API_KEY, BYBIT_API_SECRET
 from pybit.unified_trading import HTTP
 import uuid
 import math
+
 # CREATE SESSION TO USE USE API V5
 session = HTTP(
     testnet=False,
@@ -11,37 +12,36 @@ session = HTTP(
 
 # PRICE LEVELS INTERESTING
 levels = [
-    [3806.0],
-    [6307.0],
-    [7925.5],
-    [10316.5],
-    [12831.0],
-    [16016.0],
-    [17770.0],
-    [18235.0],
-    [20093.0],
-    [21199.5],
-    [22914.0],
-    [23318.0],
-    [24350.5],
-    [26252.0],
-    [27953.5],
-    [28396.5],
-    [29168.0],
-    [29573.5],
-    [30021.0],
-    [32902.0],
-    [34760.5],
-    [36044.0],
-    [42960.5],
-    [46542.0],
-    [50733.0],
-    [57134.0],
-    [58876.0],
-    [61477.5]
+    3806.0,
+    6307.0,
+    7925.5,
+    10316.5,
+    12831.0,
+    16016.0,
+    17770.0,
+    18235.0,
+    20093.0,
+    21199.5,
+    22914.0,
+    23318.0,
+    24350.5,
+    26252.0,
+    27953.5,
+    28396.5,
+    29168.0,
+    29573.5,
+    30021.0,
+    32902.0,
+    34760.5,
+    36044.0,
+    42960.5,
+    46542.0,
+    50733.0,
+    57134.0,
+    58876.0,
+    61477.5
 ]
 
-print(type(levels))
 # MINIMUM POSITION SIZE IN COIN DENOMINATION
 minimum_position = 0.001
 
@@ -68,3 +68,26 @@ def find_closest_index(arr, x):
     return closest_index
 closest_index = find_closest_index(levels, current_price)
 print(f"The index of the element closest to {current_price} is: {closest_index}")
+
+# DEFINE BETWEEN WHICH INDEX I WANT TO POST ORDER
+end_index = closest_index
+start_index = 5
+
+def getIndexOfHighestOrder(x):
+    # CALCULATE THE COST IN DOLLARS OF POSITIONING AT THE WANTED LEVELS
+    sum_result = 0
+    for i in range(start_index, x):
+        sum_result += levels[i] * 0.001
+    # CHECK IF COST IN DOLLARS IS LOWER THAN MY MAX SIZE
+    result_ternary = 0 if sum_result > allocation  else 1
+    # IF COST IN DOLLARS IS TOO HIGH THEN TRY AGAIN STARTING FROM AN INDEX LOWER
+    if result_ternary == 0 :
+        print("not enough funds")
+        x - 1
+        foo(end_index)
+
+    print("enough_found")
+    return end_index
+
+end_index = getIndexOfHighestOrder(end_index)
+print(end_index)
