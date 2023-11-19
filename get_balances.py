@@ -2,80 +2,78 @@
 from config import BYBIT_API_KEY, BYBIT_API_SECRET, BYBIT_API_KEY_INTRA, BYBIT_API_SECRET_INTRA, BYBIT_API_KEY_INTRA2, BYBIT_API_SECRET_INTRA2, BYBIT_API_KEY_INTRA3, BYBIT_API_SECRET_INTRA3, BYBIT_API_KEY_CLASSIC, BYBIT_API_SECRET_CLASSIC, BYBIT_API_KEY_CLASSIC2, BYBIT_API_SECRET_CLASSIC2, BYBIT_API_KEY_CLASSIC3, BYBIT_API_SECRET_CLASSIC3, BYBIT_API_KEY_SWING, BYBIT_API_SECRET_SWING, BYBIT_API_KEY_SWING2, BYBIT_API_SECRET_SWING2, BYBIT_API_KEY_SWING3, BYBIT_API_SECRET_SWING3
 from config import BANK
 from pybit.unified_trading import HTTP
-
+import time
 session = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY,
-    api_secret=BYBIT_API_SECRET,
+    api_secret=BYBIT_API_SECRET
 )
 sessionIntra = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY_INTRA,
-    api_secret=BYBIT_API_SECRET_INTRA,
+    api_secret=BYBIT_API_SECRET_INTRA
 )
 sessionIntra2 = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY_INTRA2,
-    api_secret=BYBIT_API_SECRET_INTRA2,
+    api_secret=BYBIT_API_SECRET_INTRA2
 )
 sessionIntra3 = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY_INTRA3,
-    api_secret=BYBIT_API_SECRET_INTRA3,
+    api_secret=BYBIT_API_SECRET_INTRA3
 )
 sessionClassic = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY_CLASSIC,
-    api_secret=BYBIT_API_SECRET_CLASSIC,
+    api_secret=BYBIT_API_SECRET_CLASSIC
 )
 sessionClassic2 = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY_CLASSIC2,
-    api_secret=BYBIT_API_SECRET_CLASSIC2,
+    api_secret=BYBIT_API_SECRET_CLASSIC2    
 )
 sessionClassic3 = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY_CLASSIC3,
-    api_secret=BYBIT_API_SECRET_CLASSIC3,
+    api_secret=BYBIT_API_SECRET_CLASSIC3    
 )
 sessionSwing = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY_SWING,
-    api_secret=BYBIT_API_SECRET_SWING,
+    api_secret=BYBIT_API_SECRET_SWING    
 )
 sessionSwing2 = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY_SWING2,
-    api_secret=BYBIT_API_SECRET_SWING2,
+    api_secret=BYBIT_API_SECRET_SWING2    
 )
 sessionSwing3 = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY_SWING3,
-    api_secret=BYBIT_API_SECRET_SWING3,
+    api_secret=BYBIT_API_SECRET_SWING3    
 )
 
-MAIN_BALANCE = float(session.get_wallet_balance(accountType="SPOT")[
+MAIN_BALANCE = float(session.get_wallet_balance(accountType="SPOT" )[
              'result']['list'][0]['coin'][1]['walletBalance'])
-INTRA_BALANCE = float(sessionIntra.get_wallet_balance(accountType="CONTRACT")[
+INTRA_BALANCE = float(sessionIntra.get_wallet_balance(accountType="CONTRACT" )[
               'result']['list'][0]['coin'][0]['equity'])
-CLASSIC_BALANCE = float(sessionClassic.get_wallet_balance(accountType="CONTRACT")[
+CLASSIC_BALANCE = float(sessionClassic.get_wallet_balance(accountType="CONTRACT" )[
                 'result']['list'][0]['coin'][0]['equity'])
-SWING_BALANCE = float(sessionSwing.get_wallet_balance(accountType="CONTRACT")[
+SWING_BALANCE = float(sessionSwing.get_wallet_balance(accountType="CONTRACT" )[
               'result']['list'][0]['coin'][0]['equity'])
-
-INTRA2_BALANCE = float(sessionIntra2.get_wallet_balance(accountType="CONTRACT")[
+INTRA2_BALANCE = float(sessionIntra2.get_wallet_balance(accountType="CONTRACT" )[
                'result']['list'][0]['coin'][0]['equity'])
-CLASSIC2_BALANCE = float(sessionClassic2.get_wallet_balance(accountType="CONTRACT")[
+CLASSIC2_BALANCE = float(sessionClassic2.get_wallet_balance(accountType="CONTRACT" )[
                  'result']['list'][0]['coin'][0]['equity'])
-SWING2_BALANCE = float(sessionSwing3.get_wallet_balance(accountType="CONTRACT")[
+SWING2_BALANCE = float(sessionSwing2.get_wallet_balance(accountType="CONTRACT" )[
                'result']['list'][0]['coin'][0]['equity'])
-
-INTRA3_BALANCE = float(sessionIntra3.get_wallet_balance(accountType="CONTRACT")[
+INTRA3_BALANCE = float(sessionIntra3.get_wallet_balance(accountType="CONTRACT" )[
                'result']['list'][0]['coin'][0]['equity'])
-CLASSIC3_BALANCE = float(sessionClassic3.get_wallet_balance(accountType="CONTRACT")[
+CLASSIC3_BALANCE = float(sessionClassic3.get_wallet_balance(accountType="CONTRACT" )[
                  'result']['list'][0]['coin'][0]['equity'])
-SWING3_BALANCE = float(sessionSwing3.get_wallet_balance(accountType="CONTRACT")[
-               'result']['list'][0]['coin'][0]['equity'])
+SWING3_BALANCE = float(sessionSwing3.get_wallet_balance(accountType="CONTRACT" )[
+                 'result']['list'][0]['coin'][0]['equity'])
 
 TOTAL_BALANCE_ON_EXCHANGE = MAIN_BALANCE + INTRA_BALANCE + CLASSIC_BALANCE + SWING_BALANCE + INTRA2_BALANCE + CLASSIC2_BALANCE + SWING2_BALANCE + INTRA3_BALANCE + CLASSIC3_BALANCE + SWING3_BALANCE
 TOTAL_STACK = TOTAL_BALANCE_ON_EXCHANGE + BANK * 1.06
@@ -89,7 +87,3 @@ print("SHOULD BE ON INTRAS", SHOULD_BE_ON_INTRAS, "$ \n","SHOULD BE ON CLASSICS"
 print("TOTAL BALANCE ON EXCHANGE : ", TOTAL_BALANCE_ON_EXCHANGE, "$")
 print("SHOULD BE ON EXCHANGE : ", SHOULD_BE_ON_EXCHANGE, "$")
 print("TOTAL STACK : ", TOTAL_STACK,"$ \n" )
-
-
-
-

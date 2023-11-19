@@ -8,7 +8,7 @@ import uuid
 session = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY,
-    api_secret=BYBIT_API_SECRET,
+    api_secret=BYBIT_API_SECRET
 )
 # SENDING ALL AVAILABLE FUNDS ON SUBBACOUNTS TO MAIN ACCOUNT
 from_member_ids = [INTRA_ID, CLASSIC_ID, SWING_ID, INTRA2_ID, CLASSIC2_ID, SWING2_ID, INTRA3_ID, CLASSIC3_ID, SWING3_ID]
