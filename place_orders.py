@@ -73,19 +73,21 @@ minimum_position_size = 0.001
 print("Minimum position size : " , minimum_position_size)
 def getIndexOfHighestOrder(x):
     # CALCULATE THE COST IN DOLLARS OF POSITIONING AT THE WANTED LEVELS
-    sum_result = 0
+    totalcost = 0
     for i in range(start_index, x):
-        sum_result += levels[i] * minimum_position_size
+        totalcost += levels[i] * minimum_position_size
     # CHECK IF COST IN DOLLARS IS LOWER THAN MY MAX SIZE
-    result_ternary = 0 if sum_result >= allocation  else 1
+    result_ternary = 0 if totalcost >= allocation  else 1
     # IF COST IN DOLLARS IS TOO HIGH THEN TRY AGAIN STARTING FROM AN INDEX LOWER
     if result_ternary == 0 :
-        print(sum_result)
+        print(totalcost)
         print("Not enough funds for the desired distribution of orders : retrying ...")
         x - 1
-        getIndexOfHighestOrder(end_index)     
-    print("Sum of prices * minimum position size : ",sum_result)
+        getIndexOfHighestOrder(end_index)
+
+    print("Sum of prices * minimum position size : ",totalcost)
     print("Enough funds to distribute between levels")
+    
     return end_index
 
 end_index = getIndexOfHighestOrder(end_index)
@@ -94,26 +96,38 @@ print("End index of optimal price for optimizing distribution of orders : ",end_
 # BETWEEN THE START INDEX OF LEVEL TO THE END INDEX FOUND WITH FUNCTION GETINDEXOFHIGHESTORDER 
 # FIND THE MAX SIZE IN $ PER ORDER FOR THE PRICE LEVELS CONTAINED IN THE WANTED RANGE INSIDE THE LEVELS ARRAY
 # ARRAY THAT CONTAIN ONLY THE RANGE OF WANTED LEVELS
-arrayWantedLevels = levels[start_index:end_index + 1]
+arrayWantedLevels = levels[start_index:end_index]
 print("Array of wanted levels : " , arrayWantedLevels)
-# MINIMUM POSITION SIZE IN COIN DENOMINATION
+print("Minimum position size : ", minimum_position_size)
+print ("Max allocation : ", allocation)
 
-def calculate_shares(prices, max_dollars, min_quantity):
-    total_shares = 0
-    remaining_dollars = max_dollars
+def calculate_allocation(price, min_quantity, remaining_funds):
+    # Calculate the maximum quantity based on remaining funds
+    max_quantity = remaining_funds / price
+
+    # Use the minimum quantity or the maximum quantity, whichever is smaller
+    chosen_quantity = min(min_quantity, max_quantity)
+
+    # Update the remaining funds after allocating
+    remaining_funds -= chosen_quantity * price
+
+    return chosen_quantity, remaining_funds
+
+def optimal_allocations(prices, min_quantity, fund_limit):
+    allocations = []
+    remaining_funds = fund_limit
 
     for price in prices:
-        # Calculate the maximum shares that can be bought at the current price
-        max_shares_at_price = min(remaining_dollars // price, min_quantity)
+        quantity, remaining_funds = calculate_allocation(price, min_quantity, remaining_funds)
+        allocations.append(quantity * price)
 
-        # Calculate the total cost of buying the maximum shares at the current price
-        total_cost_at_price = max_shares_at_price * price
+    return allocations
 
-        # Update remaining dollars and total shares
-        remaining_dollars -= total_cost_at_price
-        total_shares += max_shares_at_price
 
-    return total_shares
+allocations = optimal_allocations(arrayWantedLevels, minimum_position_size, allocation)
 
-result = calculate_shares(arrayWantedLevels, allocation, minimum_position_size)
-print(f"The maximum amount of shares that can be bought is: {result} shares.")
+print("Size in USDT per order : ", allocations)
+print("Value in USDT of all orders : ", sum(allocations))
+print("percentage of funds allocated : ", ( sum(allocations) / allocation) * 100, " %")
+
+
