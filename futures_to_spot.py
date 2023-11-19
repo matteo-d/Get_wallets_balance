@@ -8,11 +8,11 @@ import uuid
 session = HTTP(
     testnet=False,
     api_key=BYBIT_API_KEY,
-    api_secret=BYBIT_API_SECRET
+    api_secret=BYBIT_API_SECRET,
 )
 # SENDING ALL AVAILABLE FUNDS ON SUBBACOUNTS TO MAIN ACCOUNT
 from_member_ids = [INTRA_ID, CLASSIC_ID, SWING_ID, INTRA2_ID, CLASSIC2_ID, SWING2_ID, INTRA3_ID, CLASSIC3_ID, SWING3_ID]
-amounts = [INTRA_TRANSFERABLE['result']['balance']['transferBalance'], CLASSIC_TRANSFERABLE['result']['balance']['transferBalance'], SWING_TRANSFERABLE['result']['balance']['transferBalance'], INTRA2_TRANSFERABLE['result']['balance']['transferBalance'], CLASSIC2_TRANSFERABLE['result']['balance']['transferBalance'], SWING2_TRANSFERABLE['result']['balance']['transferBalance'], INTRA3_TRANSFERABLE['result']['balance']['transferBalance'], CLASSIC3_TRANSFERABLE['result']['balance']['transferBalance'], SWING3_TRANSFERABLE['result']['balance']['transferBalance']]
+amounts = [INTRA_TRANSFERABLE, CLASSIC_TRANSFERABLE, SWING_TRANSFERABLE, INTRA2_TRANSFERABLE, CLASSIC2_TRANSFERABLE, SWING2_TRANSFERABLE, INTRA3_TRANSFERABLE, CLASSIC3_TRANSFERABLE, SWING3_TRANSFERABLE]
 
 def fund_spot_account(session, from_member_ids, amounts):
     if len(from_member_ids) != len(amounts):
@@ -36,7 +36,8 @@ def fund_spot_account(session, from_member_ids, amounts):
                 fromMemberId=from_member_id,
                 toMemberId=MAIN_ID, 
                 fromAccountType=from_account_type,
-                toAccountType=to_account_type
+                toAccountType=to_account_type,
+                recv_window=20000
             )
             results.append(result)
         else : 

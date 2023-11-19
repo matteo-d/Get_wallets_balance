@@ -56,52 +56,64 @@ MAIN_TRANSFERABLE = session.get_coin_balance(
     accountType="SPOT",
     coin="USDT",
     memberId=MAIN_ID
-)
+)['result']['balance']['transferBalance']
 
 INTRA_TRANSFERABLE = sessionIntra.get_coin_balance(
     accountType="CONTRACT",
     coin="USDT",
     memberId=INTRA_ID,
     recv_window=10000
-)
+)['result']['balance']['transferBalance']
 
 CLASSIC_TRANSFERABLE = sessionClassic.get_coin_balance(
     accountType="CONTRACT",
     coin="USDT",
     memberId=CLASSIC_ID
-)
+)['result']['balance']['transferBalance']
 SWING_TRANSFERABLE = sessionSwing.get_coin_balance(
     accountType="CONTRACT",
     coin="USDT",
     memberId=SWING_ID
-)
+)['result']['balance']['transferBalance']
 INTRA2_TRANSFERABLE = sessionIntra2.get_coin_balance(
     accountType="CONTRACT",
     coin="USDT",
     memberId=INTRA2_ID
-)
+)['result']['balance']['transferBalance']
 CLASSIC2_TRANSFERABLE = sessionClassic2.get_coin_balance(
     accountType="CONTRACT",
     coin="USDT",
     memberId=CLASSIC2_ID
-)
+)['result']['balance']['transferBalance']
 SWING2_TRANSFERABLE = sessionSwing2.get_coin_balance(
     accountType="CONTRACT",
     coin="USDT",
     memberId=SWING2_ID
-)
+)['result']['balance']['transferBalance']
 INTRA3_TRANSFERABLE = sessionIntra3.get_coin_balance(
     accountType="CONTRACT",
     coin="USDT",
     memberId=INTRA3_ID
-)
+)['result']['balance']['transferBalance']
 CLASSIC3_TRANSFERABLE = sessionClassic3.get_coin_balance(
     accountType="CONTRACT",
     coin="USDT",
     memberId=CLASSIC3_ID
-)
+)['result']['balance']['transferBalance']
 SWING3_TRANSFERABLE = sessionSwing3.get_coin_balance(
     accountType="CONTRACT",
     coin="USDT",
     memberId=SWING3_ID
-)
+)['result']['balance']['transferBalance']
+
+print("Transferable funds on :\n ",
+      "MAIN ", MAIN_TRANSFERABLE,"\n",
+      "INTRA ", INTRA_TRANSFERABLE,"\n",
+      "CLASSIC ", CLASSIC_TRANSFERABLE,"\n",
+      "SWING ", SWING_TRANSFERABLE,"\n",
+      "INTRA2 ", INTRA2_TRANSFERABLE,"\n",
+      "CLASSIC2 ", CLASSIC2_TRANSFERABLE,"\n",
+      "SWING2 ", SWING2_TRANSFERABLE,"\n",
+      "INTRA3 ",INTRA3_TRANSFERABLE,"\n",
+      "CLASSIC3 ",CLASSIC3_TRANSFERABLE,"\n",
+      "SWING3 ", SWING3_TRANSFERABLE,"\n")
