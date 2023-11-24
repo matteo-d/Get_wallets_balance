@@ -148,16 +148,17 @@ print("percentage of funds allocated : ",
 # Loop through the arrays and place orders
 for price, amount in zip(arrayWantedLevels, arrayAllocations):
     # Convert the price to a string with a valid decimal representation
-    price_str = format(price, '.2f')  # You can adjust the precision ('.2f') as needed
+    # You can adjust the precision ('.2f') as needed
+    price_str = format(price, '.2f')
     # Define order parameters
-   
+
     print(price_str)
     print(session.place_order(
-    category="spot",
-    symbol="BTCUSDT",
-    side="Buy",
-    orderType="Limit",
-    qty="0.001",
-    price=price_str,
-    isLeverage=0,
-))
+        category="spot",
+        symbol="BTCUSDT",
+        side="Buy",
+        orderType="Limit",
+        qty="0.001",
+        price=price_str,
+        isLeverage=0,
+    ))
