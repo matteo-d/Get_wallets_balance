@@ -56,50 +56,60 @@ coin_infos = session.get_tickers(
     category="spot",
     symbol="BTCUSDT",
 )
-current_price = math.floor(float(coin_infos['result']['list'][0]['usdIndexPrice']))
+current_price = math.floor(
+    float(coin_infos['result']['list'][0]['usdIndexPrice']))
 print("Current price : ", current_price)
 
 # FIND INDEX OF THE PRICE CLOSEST TO THE CURRENT PRICE OF THE COIN
+
+
 def find_closest_index(arr, x):
     closest_index = min(range(len(arr)), key=lambda i: abs(arr[i] - x))
     return closest_index
+
+
 closest_index = find_closest_index(levels, current_price)
-print(f"The index of the element closest to {current_price} is: {closest_index}")
+print(
+    f"The index of the element closest to {current_price} is: {closest_index}")
 
 # DEFINE BETWEEN WHICH INDEX I WANT TO POST ORDER
 end_index = closest_index
 start_index = 5
 minimum_position_size = 0.001
-print("Minimum position size : " , minimum_position_size)
+print("Minimum position size : ", minimum_position_size)
+
+
 def getIndexOfHighestOrder(x):
     # CALCULATE THE COST IN DOLLARS OF POSITIONING AT THE WANTED LEVELS
     totalcost = 0
     for i in range(start_index, x):
         totalcost += levels[i] * minimum_position_size
     # CHECK IF COST IN DOLLARS IS LOWER THAN MY MAX SIZE
-    result_ternary = 0 if totalcost >= allocation  else 1
+    result_ternary = 0 if totalcost >= allocation else 1
     # IF COST IN DOLLARS IS TOO HIGH THEN TRY AGAIN STARTING FROM AN INDEX LOWER
-    if result_ternary == 0 :
+    if result_ternary == 0:
         print(totalcost)
         print("Not enough funds for the desired distribution of orders : retrying ...")
         x - 1
         getIndexOfHighestOrder(end_index)
 
-    print("Sum of prices * minimum position size : ",totalcost)
+    print("Sum of prices * minimum position size : ", totalcost)
     print("Enough funds to distribute between levels")
-    
+
     return end_index
 
-end_index = getIndexOfHighestOrder(end_index)
-print("End index of optimal price for optimizing distribution of orders : ",end_index)
 
-# BETWEEN THE START INDEX OF LEVEL TO THE END INDEX FOUND WITH FUNCTION GETINDEXOFHIGHESTORDER 
+end_index = getIndexOfHighestOrder(end_index)
+print("End index of optimal price for optimizing distribution of orders : ", end_index)
+
+# BETWEEN THE START INDEX OF LEVEL TO THE END INDEX FOUND WITH FUNCTION GETINDEXOFHIGHESTORDER
 # FIND THE MAX SIZE IN $ PER ORDER FOR THE PRICE LEVELS CONTAINED IN THE WANTED RANGE INSIDE THE LEVELS ARRAY
 # ARRAY THAT CONTAIN ONLY THE RANGE OF WANTED LEVELS
 arrayWantedLevels = levels[start_index:end_index]
-print("Array of wanted levels : " , arrayWantedLevels)
+print("Array of wanted levels : ", arrayWantedLevels)
 print("Minimum position size : ", minimum_position_size)
-print ("Max allocation : ", allocation)
+print("Max allocation : ", allocation)
+
 
 def calculate_allocation(price, min_quantity, remaining_funds):
     # Calculate the maximum quantity based on remaining funds
@@ -113,21 +123,41 @@ def calculate_allocation(price, min_quantity, remaining_funds):
 
     return chosen_quantity, remaining_funds
 
+
 def optimal_allocations(prices, min_quantity, fund_limit):
     allocations = []
     remaining_funds = fund_limit
 
     for price in prices:
-        quantity, remaining_funds = calculate_allocation(price, min_quantity, remaining_funds)
+        quantity, remaining_funds = calculate_allocation(
+            price, min_quantity, remaining_funds)
         allocations.append(quantity * price)
 
     return allocations
 
 
-allocations = optimal_allocations(arrayWantedLevels, minimum_position_size, allocation)
+arrayAllocations = optimal_allocations(
+    arrayWantedLevels, minimum_position_size, allocation)
 
-print("Size in USDT per order : ", allocations)
-print("Value in USDT of all orders : ", sum(allocations))
-print("percentage of funds allocated : ", ( sum(allocations) / allocation) * 100, " %")
+print("Size in USDT per order : ", arrayAllocations)
+print("Value in USDT of all orders : ", sum(arrayAllocations))
+print("percentage of funds allocated : ",
+      (sum(arrayAllocations) / allocation) * 100, " %")
 
-
+# PLACE ORDERS
+# Loop through the arrays and place orders
+for price, amount in zip(arrayWantedLevels, arrayAllocations):
+    # Convert the price to a string with a valid decimal representation
+    price_str = format(price, '.2f')  # You can adjust the precision ('.2f') as needed
+    # Define order parameters
+   
+    print(price_str)
+    print(session.place_order(
+    category="spot",
+    symbol="BTCUSDT",
+    side="Buy",
+    orderType="Limit",
+    qty="0.001",
+    price=price_str,
+    isLeverage=0,
+))
