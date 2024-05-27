@@ -1,7 +1,10 @@
+# BOMBA HAKASH
+
 # After sending funds to Spot
 # Get equity on exchange
-from get_balances import SHOULD_BE_ON_INTRAS, SHOULD_BE_ON_CLASSICS, SHOULD_BE_ON_SWINGS
-from config import BYBIT_API_KEY, BYBIT_API_SECRET, SWING_ID, MAIN_ID
+from config import BYBIT_API_KEY, BYBIT_API_SECRET
+from get_balances import  MAIN_BALANCE
+from config import MAIN_ID,INTRA_ID,CLASSIC_ID,SWING_ID,INTRA2_ID,CLASSIC2_ID,SWING2_ID,INTRA3_ID,CLASSIC3_ID,SWING3_ID
 from pybit.unified_trading import HTTP
 import uuid
 
@@ -11,14 +14,13 @@ session = HTTP(
     api_secret=BYBIT_API_SECRET,
 )
 
-# Transfer 1/3 to swing
-def fund_account(session):
+def fund_swing(session):
     coin = "USDT"
     from_account_type = "SPOT"
     to_account_type = "CONTRACT"
-    amount = int(SHOULD_BE_ON_INTRAS) + int(SHOULD_BE_ON_CLASSICS) + int(SHOULD_BE_ON_SWINGS)
+    amount = int(MAIN_BALANCE) - 1
     transfer_id = str(uuid.uuid4())
-    result = session.create_universal_transfer(
+    result_swing = session.create_universal_transfer(
         transferId=transfer_id,
         coin=coin,
         amount=str(amount),
@@ -27,7 +29,7 @@ def fund_account(session):
         fromAccountType=from_account_type,
         toAccountType=to_account_type
     )
-    return result
+    return result_swing
 
-result = fund_account(session)
-print(result)
+result_swing = fund_swing(session)
+print(result_swing)
