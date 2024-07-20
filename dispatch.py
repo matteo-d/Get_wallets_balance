@@ -14,10 +14,10 @@ session = HTTP(
     api_key=BYBIT_API_KEY,
     api_secret=BYBIT_API_SECRET,
 )
-AMOUNT = math.floor((int(TOTAL_BALANCE_ON_EXCHANGE)- 1) / 6)
+AMOUNT = math.floor((int(MAIN_BALANCE)- 1) / 6)
 print(AMOUNT)
 # FUNDS INTRAS ACCOUNTS
-accounts = [INTRA_ID, INTRA2_ID, INTRA3_ID, CLASSIC_ID, CLASSIC2_ID, CLASSIC3_ID]
+accounts = [INTRA_ID, INTRA2_ID, INTRA3_ID, CLASSIC_ID, CLASSIC2_ID]
 
 def fund_intra_accounts(session, accounts):
     coin = "USDT"

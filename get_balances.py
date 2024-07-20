@@ -56,7 +56,8 @@ sessionSwing3 = HTTP(
 )
 
 MAIN_BALANCE = float(session.get_wallet_balance(accountType="SPOT" )[
-             'result']['list'][0]['coin'][1]['walletBalance'])
+             'result']['list'][0]['coin'][0]['walletBalance'])
+
 INTRA_BALANCE = float(sessionIntra.get_wallet_balance(accountType="CONTRACT" )[
               'result']['list'][0]['coin'][0]['equity'])
 CLASSIC_BALANCE = float(sessionClassic.get_wallet_balance(accountType="CONTRACT" )[
